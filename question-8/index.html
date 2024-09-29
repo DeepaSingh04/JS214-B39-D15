@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // library.js
+
+// Book Constructor Function
+function Book(title, author, isAvailable = true) {
+    this.title = title; // Title of the book
+    this.author = author; // Author of the book
+    this.isAvailable = isAvailable; // Availability status of the book
+}
+
+// Member Constructor Function
+function Member(name, borrowedBooks = []) {
+    this.name = name; // Name of the member
+    this.borrowedBooks = borrowedBooks; // Books borrowed by the member
+}
+
+// Method to borrow a book
+Member.prototype.borrowBook = function(book) {
+    if (!book.isAvailable) {
+        console.log(`"${book.title}" is already borrowed.`);
+        return;
+    }
+    if (this.borrowedBooks.length >= 3) {
+        console.log(`${this.name} cannot borrow more than 3 books.`);
+        return;
+    }
+    book.isAvailable = false; // Mark the book as not available
+    this.borrowedBooks.push(book.title); // Add book to borrowedBooks
+    console.log(`${this.name} borrowed "${book.title}".`);
+};
+
+// Premium Member Constructor Function
+function PremiumMember(name, borrowedBooks = []) {
+    Member.call(this, name, borrowedBooks); // Call Member constructor
+    this.specialCollectionAccess = true; // Premium members have access to special collections
+}
+
+// Inherit from Member
+PremiumMember.prototype = Object.create(Member.prototype);
+PremiumMember.prototype.constructor = PremiumMember;
+
+// Override the borrowBook method for premium members
+PremiumMember.prototype.borrowBook = function(book) {
+    // Allow premium members to borrow up to 5 books
+    if (!book.isAvailable) {
+        console.log(`"${book.title}" is already borrowed.`);
+        return;
+    }
+    if (this.borrowedBooks.length >= 5) {
+        console.log(`${this.name} cannot borrow more than 5 books.`);
+        return;
+    }
+    book.isAvailable = false; // Mark the book as not available
+    this.borrowedBooks.push(book.title); // Add book to borrowedBooks
+    console.log(`${this.name} borrowed "${book.title}".`);
+};
+
+// Function to demonstrate the functionality
+function demoLibrarySystem() {
+    // Create several book objects
+    const book1 = new Book("To Kill a Mockingbird", "Harper Lee");
+    const book2 = new Book("1984", "George Orwell");
+    const book3 = new Book("The Great Gatsby", "F. Scott Fitzgerald");
+    const book4 = new Book("Moby Dick", "Herman Melville");
+    const book5 = new Book("War and Peace", "Leo Tolstoy");
+    
+    // Create a regular member and a premium member
+    const regularMember = new Member("Alice");
+    const premiumMember = new PremiumMember("Bob");
+    
+    // Demonstrate borrowing books
+    regularMember.borrowBook(book1); // Alice borrows book1
+    regularMember.borrowBook(book2); // Alice borrows book2
+    regularMember.borrowBook(book3); // Alice borrows book3
+    regularMember.borrowBook(book4); // Alice cannot borrow more than 3 books
+    
+    premiumMember.borrowBook(book2); // Bob borrows book2 (already borrowed by Alice)
+    premiumMember.borrowBook(book3); // Bob borrows book3
+    premiumMember.borrowBook(book4); // Bob borrows book4
+    premiumMember.borrowBook(book5); // Bob borrows book5
+    premiumMember.borrowBook(book1); // Bob cannot borrow more than 5 books
+    
+    // Create a bound function for borrowing books
+    const borrowBookForAlice = regularMember.borrowBook.bind(regularMember);
+    borrowBookForAlice(book1); // Attempting to borrow book1 again
+}
+
+// Run the demo
+demoLibrarySystem();
+
+    </script>
+</body>
+</html>

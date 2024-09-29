@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Education Platform</title>
+    <script>
+        // Base class User
+        class User {
+            constructor(name, email) {
+                this.name = name;
+                this.email = email;
+            }
+
+            getDetails() {
+                console.log(`Name: ${this.name}, Email: ${this.email}`);
+            }
+        }
+
+        // Student class inheriting from User
+        class Student extends User {
+            constructor(name, email, studentId) {
+                super(name, email); // Call the constructor of the base class
+                this.studentId = studentId;
+            }
+
+            enroll() {
+                console.log(`Student ${this.name} has enrolled.`);
+            }
+        }
+
+        // Instructor class inheriting from User
+        class Instructor extends User {
+            constructor(name, email, instructorId) {
+                super(name, email); // Call the constructor of the base class
+                this.instructorId = instructorId;
+            }
+
+            assignGrade() {
+                console.log(`Instructor ${this.name} assigned a grade.`);
+            }
+        }
+
+        // Demonstration of the system
+        function runEducationPlatform() {
+            // Create instances of Student and Instructor
+            const student1 = new Student("Alice", "alice@example.com", "S001");
+            const instructor1 = new Instructor("Bob", "bob@example.com", "I001");
+
+            // Call methods on Student instance
+            student1.getDetails(); // Log student details
+            student1.enroll();     // Log enrollment message
+
+            // Call methods on Instructor instance
+            instructor1.getDetails(); // Log instructor details
+            instructor1.assignGrade(); // Log grade assignment message
+        }
+
+        // Run the education platform demonstration
+        runEducationPlatform();
+    </script>
+</head>
+<body>
+    <h1>Online Education Platform</h1>
+    <p>Open the console to see the output.</p>
+</body>
+</html>
